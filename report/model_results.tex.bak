@@ -1,0 +1,79 @@
+\documentclass{article}
+
+\begin{document}
+
+% Table created by stargazer v.5.0 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
+% Date and time: Thu, Mar 13, 2014 - 11:24:08 AM
+\begin{table}[!htbp] \centering
+  \caption{}
+  \label{}
+\begin{tabular}{@{\extracolsep{5pt}}lc}
+\\[-1.8ex]\hline
+\hline \\[-1.8ex]
+ & \multicolumn{1}{c}{\textit{Dependent variable:}} \\
+\cline{2-2}
+\\[-1.8ex] & IIR.annual \\
+\hline \\[-1.8ex]
+ deficit & $-$0.428$^{*}$ \\
+  & (0.220) \\
+  & \\
+ govex & 0.443$^{***}$ \\
+  & (0.159) \\
+  & \\
+ inflation.deflt & $-$0.007$^{**}$ \\
+  & (0.003) \\
+  & \\
+ official.xr.pct & $-$0.0001 \\
+  & (0.0001) \\
+  & \\
+ cum.default.60 & $-$0.168 \\
+  & (0.142) \\
+  & \\
+ polity & 0.228 \\
+  & (0.148) \\
+  & \\
+ varpol.5 & $-$0.283$^{*}$ \\
+  & (0.150) \\
+  & \\
+ external.debt & 0.0001$^{*}$ \\
+  & (0.00005) \\
+  & \\
+ growth & 1.643$^{***}$ \\
+  & (0.340) \\
+  & \\
+ l.gdp.pc & 5.358$^{***}$ \\
+  & (1.278) \\
+  & \\
+ l.gdp & 2.342$^{**}$ \\
+  & (0.891) \\
+  & \\
+ Constant & $-$45.540$^{***}$ \\
+  & (8.550) \\
+  & \\
+\hline \\[-1.8ex]
+Observations & 90 \\
+R$^{2}$ & 0.771 \\
+Adjusted R$^{2}$ & 0.739 \\
+Residual Std. Error & 6.616 (df = 78) \\
+F Statistic & 23.928$^{***}$ (df = 11; 78) \\
+\hline
+\hline \\[-1.8ex]
+\textit{Note:}  & \multicolumn{1}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\
+\end{tabular}
+\end{table}
+
+% Table created by stargazer v.5.0 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
+% Date and time: Thu, Mar 13, 2014 - 11:24:08 AM
+\begin{table}[!htbp] \centering
+  \caption{}
+  \label{}
+\begin{tabular}{@{\extracolsep{5pt}} cccccccccccc}
+\\[-1.8ex]\hline
+\hline \\[-1.8ex]
+(Intercept) & deficit & govex & inflation.deflt & official.xr.pct & cum.default.60 & polity & varpol.5 & external.debt & growth & l.gdp.pc & l.gdp \\
+$8.676$ & $0.162$ & $0.134$ & $0.003$ & $0.00003$ & $0.163$ & $0.118$ & $0.128$ & $0.00004$ & $0.315$ & $1.210$ & $0.809$ \\
+\hline \\[-1.8ex]
+\end{tabular}
+\end{table} 
+
+\end{document}

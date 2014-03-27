@@ -2,20 +2,38 @@ rm(list=ls())
 toLoad <- c("plyr", "reshape2", "stargazer", "car", "xtable")
 lapply(toLoad, library, character.only=TRUE)
 
-# ---- Convenience function ----
-summarize.r = function(reg.lm, ...){
-  z = summary.lm(reg.lm)
-  W.VCOV = vcovHC(reg.lm,type="HC0")
-  sig.sq = ((summary(reg.lm)$sigma)^2)
-  coef = z$coefficients[,1]
+# ---- Function ----
+## Heteroskedasticity-robust standard error calculation.
+summaryw <- function(model) {
+  s <- summary(model)
+  X <- model.matrix(model)
+  u2 <- residuals(model)^2
+  XDX <- 0
   
-  White.SE <- sqrt(diag(W.VCOV)) t.robust <- coef/White.SE ## Element-by-element division 
-  df <- reg.lm$df.residual 
-  p.val.robust <- 2*(1-pt(abs(t.robust),df)) 
-  z$cov.unscaled = W.VCOV/sig.sq
-  z$coefficients[,2] = White.SE
-  z$coefficients[,3] = t.robust
-  z$coefficients[,4] = p.val.robust z 
+  ## Here one needs to calculate X'DX. But due to the fact that
+  ## D is huge (NxN), it is better to do it with a cycle.
+  for(i in 1:nrow(X)) {
+    XDX <- XDX + u2[i]*X[i,]%*%t(X[i,])
+  }
+  
+  # inverse(X'X)
+  XX1 <- solve(t(X)%*%X)
+  
+  # Variance calculation (Bread x meat x Bread)
+  varcovar <- XX1 %*% XDX %*% XX1
+  
+  # degrees of freedom adjustment
+  dfc <- sqrt(nrow(X))/sqrt(nrow(X)-ncol(X))
+  
+  # Standard errors of the coefficient estimates are the
+  # square roots of the diagonal elements
+  stdh <- dfc*sqrt(diag(varcovar))
+  
+  t <- model$coefficients/stdh
+  p <- 2*pnorm(-abs(t))
+  results <- cbind(model$coefficients, stdh, t, p)
+  dimnames(results) <- dimnames(s$coefficients)
+  results
 }
 
 # ---- Load and create variables ----
@@ -34,6 +52,27 @@ rhs.between <- c("deficit + govex + inflation.deflt + official.xr.pct +
 fm_iir.between <- formula(paste0("IIR.annual ~ ", rhs.between))
 m_iir.btwn <- lm(fm_iir.between, data=data.country_mean)
 m_iir.btwn_se <- sqrt(diag(hccm(lm(fm_iir.between, data=data.country_mean), type = "hc0")))
+
+
+res <- data.frame(coeff=m_iir.btwn$coeff, se=m_iir.btwn_se)
+res <- within(res, t <- coeff / se)
+res <- within(res, p <- 2 * pt(abs(t), df=m_iir.btwn$df, lower.tail=FALSE))
+
+
+format( round(summaryw(m_iir.btwn)[ , 4], 2))
+
+data.frame(summaryw(m_iir.btwn)[ ,1:3], format( round(summaryw(m_iir.btwn)[ , 4], 2)) )
+
+
+format(round(summaryw(m_iir.btwn), 2), nsmall=2)
+
+prettyNum(summaryw(m_iir.btwn), format="f")
+
+apply(summaryw(m_iir.btwn), 2, formatC, digits=2)
+
+summary(m_iir.btwn)
+
+
 
 length(m_iir.btwn$coeff)
 length(m_iir.btwn_se)
